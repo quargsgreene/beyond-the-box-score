@@ -1,3 +1,13 @@
+// registered functions
+const choppy_fx = register('choppy', (pat) => pat
+.adsr(".2:.2:.3:.3")
+.tremolosync(1)
+.tremolodepth(2)
+.chop(100)
+.pcurve("<1? 0>/2")
+.pan("<.5 1 0 .5>")
+.degrade()
+)
 
 //cue 1
 setcpm(68/3)
@@ -70,6 +80,7 @@ let synth_pad_0_cue_3 = "<<8,5,7,0> ~ <5,7,9,12> ~>"
 .postgain(0.2)
 .color("gray")
 ._spectrum()
+
 let synth_pad_1_cue_3 = sound("zzfx")
 .room(2)
 .freq("<659.24 ~!3 587.33 659.24 ~!3 <592, 659.24> <659.24, 98> ~!4 <659.24, 98, 123, 592> ~!3 <592, 659.24, 783.99>>")
@@ -385,7 +396,66 @@ let synth_fx_5_cue_9 = sound("crow")
 .slow(2)
 .gain(0.1)
 
-let cue_9 = stack(piano_cue_9, bass_synth_cue_9, synth_fx_0_cue_9, synth_fx_1_cue_9, synth_fx_2_cue_9, synth_fx_3_cue_9, synth_fx_4_cue_9, synth_fx_5_cue_9)
+let cue_9 = stack(
+  piano_cue_9, 
+  bass_synth_cue_9, 
+  synth_fx_0_cue_9, 
+  synth_fx_1_cue_9, 
+  synth_fx_2_cue_9, 
+  synth_fx_3_cue_9, 
+  synth_fx_4_cue_9, 
+  synth_fx_5_cue_9
+)
+
+// cue 13
+setcpm(48/7)
+let synth_pad_0_cue_13 =  sound("[gm_celesta:1, gm_breath_noise:8]")
+.note("bb")
+.choppy()
+.room(3)
+
+let synth_piano_0_cue_13 = sound("piano:1")
+.note("<<bb2, eb3, ab3, db4> <eb3, ab3, db4, bb4> <ab3, db4, bb4, f4> <eb4, db4, db5, f5> <eb4, db4, db5, f5, g5>? ~!2>")
+.rarely(x=>x.scrub("{0.1 .25@3 0.7 <0.8:1.5>}%3"))
+.pdecay("<0 .1 .25 .5>")
+.hpf(choose("100", "50", "500", "1000", "20", "150"))
+.hpq(1)
+.room(choose("5", "2", "1"))
+.almostNever(x=>x.echo(7, 1/7, 0.9))
+.postgain(0.2)
+ 
+let synth_bass_0_cue_13 = sound("gm_synth_bass_1:4")
+.note("bb1")
+.gain(0.2)
+.lpf(choose("400", "200", "2000", "20000", "300", "100", "500"))
+.prelease("<0 .1 .25 .5>")
+.often(x=>x.adsr("0.5:0.2:0.4:0.5"))
+.lpa(0.5)
+
+let synth_lead_0_cue_13 = n(run(10))
+.scale("ab5:pentatonic")
+.sometimes(x=>x.sub(note("5")))
+.sound("[gm_fx_goblins:3, gm_epiano2:8, brown]")
+.degradeBy(0.4)
+.often(x=>x.jux(rev))
+.room(2)
+.pan("<0 1>")
+.slow(4)
+.late("<.1 .3 .4 0>")
+.gain("<0.3 0.2 0.1 0!16>")
+
+cue_13: arrange(
+  [2, stack(
+      synth_piano_0_cue_13, 
+      synth_pad_0_cue_13,
+      synth_lead_0_cue_13
+  )],
+  [2, stack(
+      synth_piano_0_cue_13,
+      synth_pad_0_cue_13,
+      synth_bass_0_cue_13 
+  )]             
+)
 
 // cue 16
 setcpm(330/11)
