@@ -1,4 +1,6 @@
-// registered functions
+
+
+// registered functions and sounds
 const choppy_fx = register('choppy', (pat) => pat
 .adsr(".2:.2:.3:.3")
 .tremolosync(1)
@@ -8,6 +10,57 @@ const choppy_fx = register('choppy', (pat) => pat
 .pan("<.5 1 0 .5>")
 .degrade()
 )
+
+registerSound(
+  'firehose',
+  (time, value, onended) => {
+    let { freq } = value; // destructure control params
+    const ctx = getAudioContext();
+    const d = ctx.createWaveShaper();
+    // create oscillator
+    const o = new OscillatorNode(ctx, { type: 'sine', frequency: Number(freq) });
+    o.start(time);
+    // add gain node to level down osc
+    const g = new GainNode(ctx, { gain: 0.3 });
+
+    function makeDistortionCurve(amount) {
+      const k = typeof amount === "number" ? amount : 50;
+      const numSamples = 48000;
+      const curve = new Float32Array(numSamples);
+      const deg = Math.PI / 180;
+    
+      for (let i = 0; i < numSamples; i++) {
+        const x = (i * 2) / numSamples - 1;
+        curve[i] = ((4 % k) * x * 12 - Math.sinh(deg)) / (Math.E + k * Math.clz32(x));
+        
+      }
+      return curve;
+    }
+  
+// …
+
+    d.curve = makeDistortionCurve(400);
+    //d.oversample = "4x";
+        // connect osc to gain
+    const node = o.connect(d);
+    // this function can be called from outside to stop the sound
+    const stop = (time) => o.stop(time);
+    // ended will be fired when stop has been fired
+    o.addEventListener('ended', () => {
+      o.disconnect();
+      d.disconnect();
+      onended();
+    });
+    
+    const stopButton = document.getElementById("cue_12_synth_0");
+    stopButton.addEventListener("click", () => {
+	node.stop();
+    })
+
+    return { node, stop };
+  },
+  { type: 'synth' },
+);
 
 //cue 1
 setcpm(68/3)
@@ -23,6 +76,8 @@ let synth_piano_0_cue_1 = n(run(3))
 .degrade()
 .sometimes(x=>x.jux(rev))
 .sound("piano:4")
+//.color("cyan")
+.pianoroll()
 
 let synth_lead_00_cue_1 = sound("[saw, gm_synth_brass_1:1]")
 .note("<~!30 ~ g4 <g4, a4> <g4, a4,  b4> <g4, a4, b4, d5>  <g4, a4, b4, d5, f5>>")
@@ -407,6 +462,27 @@ let cue_9 = stack(
   synth_fx_5_cue_9
 )
 
+// cue 12
+_synth_pad_0_cue_12: sound('firehose')
+.freq(38.89)
+.lpf(slider(0, 0, 2000))
+synth_fx_0_cue_12: sound("gm_alto_sax:2")
+.note("eb5")
+.choppy()
+synth_fx_1_cue_12: sound("[space:4, pink]")
+.choppy()
+
+bass_synth_cue_12: sound("zzfx")
+.room(3)
+.stack("bb2", "d3", ["g3", "f3"])
+.superimpose(x=>x.add(7))
+.lpf(9000)
+.chorus(0.5)
+.adsr(".2:.3:.1:.4")
+.compressor("-20:5:1:.003:.02")
+.note()
+.slow(4)
+
 // cue 13
 setcpm(48/7)
 let synth_pad_0_cue_13 =  sound("[gm_celesta:1, gm_breath_noise:8]")
@@ -436,25 +512,22 @@ let synth_lead_0_cue_13 = n(run(10))
 .scale("ab5:pentatonic")
 .sometimes(x=>x.sub(note("5")))
 .sound("[gm_fx_goblins:3, gm_epiano2:8, brown]")
-.degradeBy(0.4)
+.degradeBy(0.2)
 .often(x=>x.jux(rev))
 .room(2)
 .pan("<0 1>")
 .slow(4)
 .late("<.1 .3 .4 0>")
-.gain("<0.3 0.2 0.1 0!16>")
+.gain("<0.3 0.2 0.1 0.05>")
 
-cue_13: arrange(
-  [2, stack(
+let cue_13 = arrange(
+  [4, stack(
       synth_piano_0_cue_13, 
-      synth_pad_0_cue_13,
-      synth_lead_0_cue_13
-  )],
-  [2, stack(
-      synth_piano_0_cue_13,
-      synth_pad_0_cue_13,
-      synth_bass_0_cue_13 
-  )]             
+      synth_pad_0_cue_13.gain(1.5),
+      synth_lead_0_cue_13,
+      synth_bass_0_cue_13
+      
+  )]
 )
 
 // cue 16
