@@ -11,8 +11,14 @@ const choppy_fx = register('choppy', (pat) => pat
 .degrade()
 )
 
+const bloat_fx = register('bloat', (pat) => pat
+.chorus(1)
+.room(1)
+.phaser(4)                                                     
+)
+
 registerSound(
-  'firehose',
+  'mysaw',
   (time, value, onended) => {
     let { freq } = value; // destructure control params
     const ctx = getAudioContext();
@@ -40,7 +46,6 @@ registerSound(
 // …
 
     d.curve = makeDistortionCurve(400);
-    //d.oversample = "4x";
         // connect osc to gain
     const node = o.connect(d);
     // this function can be called from outside to stop the sound
@@ -51,12 +56,6 @@ registerSound(
       d.disconnect();
       onended();
     });
-    
-    const stopButton = document.getElementById("cue_12_synth_0");
-    stopButton.addEventListener("click", () => {
-	node.stop();
-    })
-
     return { node, stop };
   },
   { type: 'synth' },
@@ -462,26 +461,104 @@ let cue_9 = stack(
   synth_fx_5_cue_9
 )
 
+// cue 11
+setcpm(150/4)
+let bird_samples = samples('https://shabda.ndre.gr/birds.json?strudel=1')
+let crowd_samples = samples('https://shabda.ndre.gr/crowd.json?strudel=1')
+let computer_samples = samples('https://shabda.ndre.gr/computer.json?strudel=1')
+
+_synth_fx_0_cue_11: sound("<[birds:1, bd] [birds:2, hh] [birds:3, sd] [birds:2, sd], < ~ ~ ~ [birds:1, <mt, rt>]>>")
+.end(.1)
+.leslie(0.3)
+//.crush(2)
+.pan("<.5 0 1 .5>")
+.fast(8)
+.degradeBy(0.1)
+.postgain(0.1)
+//.hush()
+
+_synth_fx_1_cue_11: sound("<[crowd:1, bd] [crowd:2, hh] [crowd:5, sd] [crowd:9, sd], < ~ ~ ~ [crowd:7, <mt, rt>]>>")
+.begin(.1)
+.chop(4)
+//.crush(8)
+.fast(2)
+.postgain(0.1)
+//.hush()
+
+_synth_fx_2_cue_11: sound("[computer:1, computer:3, crowd:4, computer:7, crowd:2, computer:9, birds:3]")
+.choppy()
+.postgain(1.5)
+
+
+_synth_lead_0_cue_11: note("ab4 c5 bb4 db5 c5 eb5 db5 f5 eb5 g5 f5 ab5 g5 bb5 ab5 c6")
+.sound("[sine, gm_violin:1]")
+.sometimes(x=>x.transpose(12))
+.sometimes(x=>x.jux(rev))
+.degradeBy(0.1)
+//.slow(2)
+.bloat()
+.crush(slider(3, 3, 16, 1))
+.distort(slider(0, 0, 2, 0.1))
+.postgain(0.1)
+//.hush()
+
+_synth_lead_1_cue_11: note("ab4 c5 bb4 db5 c5 eb5 db5 f5 eb5 g5 f5 ab5 g5 bb5 ab5 c6")
+.sound("gm_piano:6")
+.sometimes(x=>x.transpose(12))
+.sometimes(x=>x.jux(rev))
+.degradeBy(0.1)
+.slow(2)
+.bloat()
+.crush(slider(16, 3, 16, 1))
+.distort(slider(0, 0, 2, 0.1))
+//.hush()
+
+_synth_bass_0_cue_11: note("ab4 c5 bb4 db5 c5 eb5 db5 f5 eb5 g5 f5 ab5 g5 bb5 ab5 c6")
+.slow(2)
+.transpose(-24)
+.crush(slider(16, 3, 16, 1))
+.fast(2)
+.distort(slider(0, 0, 1, 0.1))
+.postgain(0.2)
+
+
+_synth_pad_0_cue_11: sound("[gm_drawbar_organ:2, brown:0.2]")
+.adsr(".3:.3:.5:.7")
+.slow(2)
+.note("[ab3, c4, eb4, ab4, c5, eb5, g5]")
+.postgain(0.2)
+
+synth_pad_1_cue_11: sound("mysaw")
+.freq(51.91)
+.gain(0.01)
+.bloat()
+
 // cue 12
-_synth_pad_0_cue_12: sound('firehose')
-.freq(38.89)
+setcpm(30/4)
+_synth_pad_0_cue_12: sound('mysaw')
+.freq(29.14)
 .lpf(slider(0, 0, 2000))
-synth_fx_0_cue_12: sound("gm_alto_sax:2")
+.gain(0.04)
+
+_synth_fx_0_cue_12: sound("gm_alto_sax:2")
 .note("eb5")
 .choppy()
-synth_fx_1_cue_12: sound("[space:4, pink]")
+.gain(4)
+_synth_fx_1_cue_12: sound("[space:4, pink]")
 .choppy()
+.gain(3)
 
-bass_synth_cue_12: sound("zzfx")
+_bass_synth_0_cue_12: sound("zzfx")
 .room(3)
 .stack("bb2", "d3", ["g3", "f3"])
 .superimpose(x=>x.add(7))
 .lpf(9000)
 .chorus(0.5)
 .adsr(".2:.3:.1:.4")
-.compressor("-20:5:1:.003:.02")
+.compressor("-20:20:1:.003:.02")
 .note()
 .slow(4)
+.postgain(0.2)
 
 // cue 13
 setcpm(48/7)
