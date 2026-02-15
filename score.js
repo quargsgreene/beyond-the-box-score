@@ -113,7 +113,19 @@ let cue_1 = arrange(
     synth_lead_0_cue_1,
     synth_fx_0_cue_1 
   )]
-)  
+)
+
+// cue 2
+setcpm(120/4)
+synth_fx_0_cue_2:sound("[gm_orchestra_hit:4, gm_brass_section:3]")
+.clip(0.3)
+.note("[a1, a2, a3]")
+.slow(2)
+.room(2)
+
+synth_vox_0_cue_2: "Box"
+.speak(4, "en")
+.slow(2)
 
 // cue 3
 setcpm(92/5)
@@ -281,6 +293,70 @@ synth_lead_0_cue_5,
 synth_lead_1_cue_5
 )
 
+// cue 6
+setcpm(120/4)
+
+let stab_samples = samples('https://shabda.ndre.gr/stab.json?strudel=1')
+samples('https://shabda.ndre.gr/glass:1.json?strudel=1')
+
+let synth_drums_0_cue_6 = sound(choose("[stab:4, space:4]", "[stab:1, soundmastersr88_bd:1]", "[stab:2, sk1_bd:1]"))
+.clip(0.2)
+.almostNever(x=>x.sound("glass").gain(0.1))
+.struct("<[x x*3] x*2!3>")
+.fast(4)
+.crush(8)
+
+let synth_lead_0_cue_6 = note("<e4@4 b4@4 e4@7 f#4 g4@8 d5@8>")
+.fast(4)
+.sound(choose("gm_voice_oohs:1", "gm_voice_oohs:2", "gm_voice_oohs:3", "gm_voice_oohs:4", "gm_voice_oohs:5", "gm_voice_oohs:6"))
+.vib(10)
+.bloat()
+.room(2)
+.pan("<1@4 0@4 0@7 0.2 0.3@8 0.5@8>")
+
+let synth_lead_1_cue_6 = sound("firehose")
+.note("<e4@4 b4@4 e4@7f#4 g4@8 d5@8>")
+.fast(4)
+
+let synth_pad_0_cue_6 = chord("<EM Em EM@2 GM [Gm9 GM9] GM@2>")
+.voicing()
+.sometimes(x=>x.penv(2))
+
+let synth_fx_0_cue_6 = sound("[wind:1, wind:2, wind:3, wind:4, wind:5, crowd:1, crowd:2, crowd:3, crowd:4, crowd:5]")
+.choppy()
+
+let synth_strings_0_cue_6 = sound("[gm_tremolo_strings:1, gm_pizzicato_strings:2, square:0.3]")
+.note("<e5@3 ~!4 b5 e5@2 ~!5 b5 e5@3 ~!4 b5 e5@2 ~!4 d5@2 g@2 ~!6 d@3 ~!6 g@2 ~!6 g@3 ~!4>")
+.fast(8)
+.rarely(x=>x.ply(8))
+.distort(0.2)
+
+let synth_bass_0_cue_6 = sound("[supersaw, gm_oboe:4, gm_piano:2]")
+.note("<e2@2 ~!5 d2 e2@2 ~!5 d2 e2@2 ~!5 d2 e2@2 ~!4 f#2@2 g@2 ~!6 d@3 ~!6 g@2  ~!6 g@3 ~!4>")
+.fast(8)
+.penv(2)
+
+_cue_6: arrange(
+  [16, stack(synth_drums_0_cue_6, synth_lead_0_cue_6)],
+  [16, stack(synth_drums_0_cue_6, 
+             synth_lead_0_cue_6, 
+             synth_bass_0_cue_6
+            )],
+  [16, stack(synth_pad_0_cue_6, synth_fx_0_cue_6)],
+  [16, stack(
+    synth_pad_0_cue_6, 
+    synth_fx_0_cue_6, 
+    synth_strings_0_cue_6 
+  )],
+  [16, stack(
+    synth_drums_0_cue_6, 
+    synth_lead_0_cue_6, 
+    synth_bass_0_cue_6, 
+    synth_strings_0_cue_6, 
+    synth_fx_0_cue_6
+  )]
+)
+.gain(0.5)
 
 // cue 7
 setcpm(50/4)
@@ -461,6 +537,34 @@ let cue_9 = stack(
   synth_fx_5_cue_9
 )
 
+// cue 10
+setcpm(140/4)
+_synth_drums_0_cue_10: sound(choose("bassdrum1:1", "clash:2:0.1", "hihat:3", "snare_hi:4", "tom_stick:5:0.5"))
+.struct("x")
+.jux(rev)
+.fast(8)
+.swing(4)
+.degrade()
+
+
+_synth_guitar_0_cue_10: arrange([4, note("<[d4, f#4, a4, d5, e5, f#5, d6] [a3, c#4, d#4, e4, f#4] [a4, c#5, e5, g5] [d3, a3, d4, f#4]>")
+.struct("<x!6 ~!2>")
+.fast(2)
+.sound("[gm_electric_guitar_jazz:9, gm_church_organ:5]")
+.swing(1)
+.gain(0.2)],
+[4, note("<[d4, f#4, a4, d5, e5, f#5, d6] [eb4, g4, bb4, eb5, f5] [a4, c#5, e5, g5] [d3, a3, d4, f#4]>")
+.struct("<x!6 ~!2>")
+.fast(2)
+.sound("[gm_electric_guitar_jazz:9, gm_church_organ:4]")
+.swing(1)
+.gain(0.2)]                         
+)
+.bloat()
+.phaser(1)
+.sometimes(x=>x.transpose(-12))
+.degradeBy(0.1)
+
 // cue 11
 setcpm(150/4)
 let bird_samples = samples('https://shabda.ndre.gr/birds.json?strudel=1')
@@ -470,71 +574,56 @@ let computer_samples = samples('https://shabda.ndre.gr/computer.json?strudel=1')
 _synth_fx_0_cue_11: sound("<[birds:1, bd] [birds:2, hh] [birds:3, sd] [birds:2, sd], < ~ ~ ~ [birds:1, <mt, rt>]>>")
 .end(.1)
 .leslie(0.3)
-//.crush(2)
+.crush(2)
 .pan("<.5 0 1 .5>")
 .fast(8)
-.degradeBy(0.1)
-.postgain(0.1)
-//.hush()
+.degrade()
+.gain(0.5)
 
 _synth_fx_1_cue_11: sound("<[crowd:1, bd] [crowd:2, hh] [crowd:5, sd] [crowd:9, sd], < ~ ~ ~ [crowd:7, <mt, rt>]>>")
 .begin(.1)
 .chop(4)
-//.crush(8)
-.fast(2)
-.postgain(0.1)
-//.hush()
-
-_synth_fx_2_cue_11: sound("[computer:1, computer:3, crowd:4, computer:7, crowd:2, computer:9, birds:3]")
-.choppy()
-.postgain(1.5)
-
+.crush(8)
 
 _synth_lead_0_cue_11: note("ab4 c5 bb4 db5 c5 eb5 db5 f5 eb5 g5 f5 ab5 g5 bb5 ab5 c6")
-.sound("[sine, gm_violin:1]")
+.superimpose(x=>x.sound("gm_orchestral_hit:2"))
+.sound("sine")
 .sometimes(x=>x.transpose(12))
 .sometimes(x=>x.jux(rev))
 .degradeBy(0.1)
-//.slow(2)
+.slow(2)
 .bloat()
-.crush(slider(3, 3, 16, 1))
-.distort(slider(0, 0, 2, 0.1))
-.postgain(0.1)
-//.hush()
+.crush(slider(16, 3, 16, 1))
+.distort(slider(2, 0, 2, 0.1))
 
 _synth_lead_1_cue_11: note("ab4 c5 bb4 db5 c5 eb5 db5 f5 eb5 g5 f5 ab5 g5 bb5 ab5 c6")
 .sound("gm_piano:6")
 .sometimes(x=>x.transpose(12))
 .sometimes(x=>x.jux(rev))
 .degradeBy(0.1)
-.slow(2)
+//.slow(2)
 .bloat()
 .crush(slider(16, 3, 16, 1))
 .distort(slider(0, 0, 2, 0.1))
-//.hush()
 
 _synth_bass_0_cue_11: note("ab4 c5 bb4 db5 c5 eb5 db5 f5 eb5 g5 f5 ab5 g5 bb5 ab5 c6")
 .slow(2)
 .transpose(-24)
-.crush(slider(16, 3, 16, 1))
-.fast(2)
-.distort(slider(0, 0, 1, 0.1))
-.postgain(0.2)
+.crush(slider(3, 3, 16, 1))
+.distort(slider(1, 0, 1, 0.1))
 
 
-_synth_pad_0_cue_11: sound("[gm_drawbar_organ:2, brown:0.2]")
+_synth_pad_0_cue_11: sound("[gm_drawbar_organ:2, brown]")
 .adsr(".3:.3:.5:.7")
 .slow(2)
 .note("[ab3, c4, eb4, ab4, c5, eb5, g5]")
-.postgain(0.2)
 
-synth_pad_1_cue_11: sound("mysaw")
+_synth_pad_1_cue_11: sound("mysaw")
 .freq(51.91)
 .gain(0.01)
 .bloat()
 
 // cue 12
-setcpm(30/4)
 _synth_pad_0_cue_12: sound('mysaw')
 .freq(29.14)
 .lpf(slider(0, 0, 2000))
@@ -558,7 +647,7 @@ _bass_synth_0_cue_12: sound("zzfx")
 .compressor("-20:20:1:.003:.02")
 .note()
 .slow(4)
-.postgain(0.2)
+.gain(0.1)
 
 // cue 13
 setcpm(48/7)
@@ -607,6 +696,120 @@ let cue_13 = arrange(
   )]
 )
 
+// cue 14
+setcpm(180/12)
+_synth_lead_0_cue_14: arrange(
+  [2, note("<e4 b4 e4 c#5 f#4 c#5 a4 e5 a4 d5 g4 d5>").sound(choose("gm_music_box:2", "gm_harpsichord:2", "sine", "pink"))],
+  [2, note("<g4 d5 d4 a4 e5 a4 c5 g5 c5 b5 f#5 b5>").sound(choose("gm_music_box:3", "[tri, gm_guitar_fret_noise:2:0.5]"))]
+)
+.fast(12)
+.bloat()
+
+_synth_bass_0_cue_14:arrange(
+  [2, note("<e4 b4 e4 c#5 f#4 c#5 a4 e5 a4 d5 g4 d5>").sound(choose("gm_electric_bass_pick:1", "gm_acoustic_bass:3", "supersaw", "brown"))],
+  [2, note("<g4 d5 d4 a4 e5 a4 c5 g5 c5 b5 f#5 b5>").sound(choose("saw", "[tri, gm_slap_bass:2:0.5]"))]
+)
+.transpose(-36)
+.fast(12)
+
+
+_synth_drums_0_cue_14: s("oh*12")
+.degrade()
+.swing(1)
+//.crush(2)
+.sometimes(x=>x.ply(2))
+.sometimes(x=>x.sound("birds:5"))
+.rarely(x=>x.sound("computer:1:0.1"))
+
+_synth_drums_1_cue_14:s("space:1*12")
+.degrade()
+.swing(1)
+.crush(slider(12, 2, 16, 1))
+
+_synth_fx_0_cue_14: sound("crow")
+.choppy()
+.gain(4)
+.room(4)
+
+_synth_pad_0_cue_14: stack(
+  sound("gm_english_horn:3").note("g5").gain(choose("1", "0.3", "2", "0.5")),
+  sound("gm_string_ensemble_1:10").note("b5").gain(choose("0.8", "0.2", "1.9", "0.6")),
+  sound("gm_oboe:4").note("d5").gain(choose("0.4", "0.2", "0.1", "1")),
+  sound("gm_pad_bowed:3").note("f#5").gain(choose("1.5", "0.7", "0.8", "0.2")),
+  sound("gm_pad_warm:5").note("a5").gain(choose("1.3", "1.9", "0.4", "0.5")),
+  sound("sine").note("c6").gain(choose("2", "0.3", "1.7", "0.1"))
+)
+.bloat()
+.sometimes(x=>x.bpf(2000))
+.rarely(x=>x.ply(choose("6", "12", "3")))
+.penv(3)
+
+// cue 15
+setcpm(150/4)
+let dog_samples = samples('https://shabda.ndre.gr/dog.json?strudel=1')
+
+
+_synth_drum_0_cue_15: sound("computer:3 computer:5 computer:9 computer:1")
+.striate(4)
+.end(0.1)
+
+_synth_drum_1_cue_15:sound("bd*4")
+.bank('RolandTR909')
+.room(1)
+
+_synth_bass_0_cue_15: sound("[gm_bassoon:2, gm_contrabass:2, gm_piano:10]*4")
+.clip(0.5)
+.note("[f#1, f#2]")
+
+_synth_strings_0_cue_15: sound("gm_orchestra_hit:3")
+.note("<f#3 a#3>")
+.superimpose(x=>x.add(12))
+.fast(4)
+
+_synth_vox_0_cue_15: sound("[gm_voice_oohs:3, gm_harmonica:5, gm_synth_bass_1:5]")
+.note("<f#4 c#4>")
+.superimpose(x=>x.add(7))
+.fast(4)
+
+_synth_lead_0_cue_15: sound("[firehose, gm_viola:1]")
+.note("<~ a#4 f#4 ~ f#5 e#5 f#4 f#3>")
+
+
+_synth_lead_1_cue_15: sound("[supersaw, gm_clarinet:5, gm_string_ensemble_1:1, gm_string_ensemble_2:1]")
+.note("<f#3 a#3 c#4 e#4 f#4 a#4 c#5 e#5>")
+.fast(8)
+.sometimes(x=>x.transpose(12).rev())
+.room(2)
+.gain(2)
+.vib(3)
+.bloat()
+
+_synth_pad_0_cue_15: sound("[gm_viola:3, gm_pad_warm:1]")
+.note("[f#5, a#5, c#5]")
+
+_synth_pad_1_cue_15: stack(
+  sound("gm_bassoon:3").note("b2"),
+  sound("gm_piano:14").note("d#3"),
+  sound("gm_voice_oohs:1").note("f#3"),
+  sound("gm_harmonica:1").note("b3"),
+  sound("gm_synth_bass_1:2").note("d#4"),
+  sound("gm_viola:1").note("f#4"),
+  sound("supersaw").note("b4"),
+  sound("gm_string_ensemble_1:1").note("d#5"),
+  sound("gm_string_ensemble_2:1").note("f#5"),
+  sound("sine").note("b5"),
+  sound("brown")
+)
+.superimpose(x=>x.transpose(-12))
+.room(3)
+.chorus(1)
+.vib(slider(1, 1, 10, 0.1))
+.crush(slider(16, 1, 16, 1))
+
+
+_synth_fx_0_cue_15: sound("<dog:1 dog:3 dog:5 dog:7 dog:9 dog:2 dog:4 [dog:6 dog:8]>")
+.fast(8)
+.gain(3)
 // cue 16
 setcpm(330/11)
 
