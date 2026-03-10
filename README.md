@@ -6,13 +6,13 @@
 *Beyond the Box* is a short film about the trials and tribulations of people with disabilities in the entertainment industry. 
 This documentary film follows seven subjects across a range of disciplines and sub-disciplines, such as drumming, cinematography, music, and more. 
 The film is one of few in its genre to cover the lives of disabled people without involving the views of non-disabled family members and/or caregivers.
-The trailer can be viewed here and the plan is for the production team to submit the film to multiple film festivals, with a focus on the Southern California region.
+The trailer can be viewed here and the plan is for the production team to submit the film to multiple film festivals.
 
 ***
 
 ## The Scoring Process
-The sountrack of **Beyond the Box** was conceived almost entirely via the [Strudel](https://strudel.cc/learn/getting-started/) music live coding environment. 
-In addition to loading samples from [Freesound.org](https://freesound.org/) via [Shadba](https://shabda.ndre.gr/), I also created and loaded several of my own sample packs.
+The sountrack of *Beyond the Box* was conceived almost entirely via the [*Strudel*](https://strudel.cc/learn/getting-started/) music live coding environment. 
+In addition to loading samples from [*Freesound.org*](https://freesound.org/) via [*Shadba*](https://shabda.ndre.gr/), I also created and loaded several of my own sample packs.
 Initially, the custom samples were loaded locally from disk and mostly consist of rather improvisational viola selections and excerpts from *Die Schule der Violintechnik*,
 composed by Henry Schradieck in 1899. Other than this, a recording of a band consisting of guitar, bass, and drums
 was provided by the director for cue 2 and drums for cue 15. Logic Pro was used for audio editing, mixing, and mastering.
@@ -34,5 +34,5 @@ In order to run things locally, fork the repository an run the `npm run dev` com
 
 
 ## LLM Use
-While I cannot guarantee that Strudel's codebase, or any other codebase involved is entirely free of LLM-generated code, the Strudel code in this repository and the resulting musical content are entirely 
+While it cannot be guaranteee that Strudel's codebase, or any other codebase involved is entirely free of LLM-generated code, the Strudel code in this repository and the resulting musical content are entirely 
 human-conceived. 
